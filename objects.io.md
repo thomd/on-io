@@ -1,4 +1,4 @@
 # Objects
 
     Vehicle := Object clone
-    Vehicle type                                   // Vehicle
+    Vehicle type                                   // (1) Vehicle

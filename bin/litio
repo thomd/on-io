@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+[ -n "$LITIO_DEBUG" ] && set -x
+
+if [ $# -eq 0 ] || [ ! -f ${!#} ]; then
+  echo "Usage: litio [--watch] literate-io-script" 1>&2 && exit 1;
+fi
+
+TMPFILE=`mktemp /tmp/litio.XXXXXX` || exit 1
+
+function compile {
+  # we consider every line with four leading spaces as io code (aka markdown)
+  # code lines with a '//' comment at the end will be wrapped with 'writeln()'
+  grep "^    " "$FILE" | sed 's/^    //' | sed 's/\(.*\) *\/\/ \((.*)\).*/writeln("\2 ", \1)/g' | sed 's/ *)/)/g' >> $TMPFILE
+  io $TMPFILE
+}
+
+function sha {
+  echo `ls -lR | md5`
+}
+old_sha=$(sha)
+
+function watch {
+  while true; do
+    if [[ $(sha) != $old_sha ]]; then
+      clear
+      compile
+      old_sha=$(sha)
+    fi
+    sleep 1
+  done
+}
+
+while test $# -ne 0; do
+  arg=$1
+  shift
+  case $arg in
+    -w|--watch)
+      WATCH=true
+      ;;
+    *)
+      FILE=$arg
+      ;;
+  esac
+done
+
+if [ $WATCH ]; then
+  trap exit SIGINT
+  clear
+  compile
+  watch
+else
+  compile
+fi
