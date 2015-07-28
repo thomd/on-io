@@ -1,17 +1,21 @@
 # Objects
 
-Create new objects by **cloning** existing ones. The existing object is a **prototype**:
+Create new objects by **cloning** existing ones. The existing object is then called a **prototype**:
 
     Product := Object clone
     Product type                                                               // (1) Product
     Product proto type                                                         // (2) Object
 
-`Object` is the root-level object. We send the `clone` **message** which returns a new object. We assign that
-object to `Product`.
+`Object` is the root-level object. 
+
+If we send a `clone` message to this object, the message invoces the clone method of the Object slot `clone`. 
+This method returns a new object which we can assign to `Product`.
+
+### Slots
 
 Objects have a collection of **slots** (a slot is basically a hash). Each slot is referred to with a key. 
-Use `:=` to assign an value (an object) to a slot. Get the value from a slot by sending the slots name as a 
-message to the object.
+Use `:=` to assign a value (or an object) to a slot. Get the value from a slot by sending the slots name as a 
+message to the object:
 
     Product description := "something you can buy"
     Product description                                                        // (3) something you can buy
@@ -20,13 +24,13 @@ Get a list of all slot names of `Product` by sending the `slotNames` method to t
 
     Product slotNames                                                          // (4) list(type, description)
 
-Every object supports `type` which gives the kind of object you are dealing with.
+Every object has a slot called `type`, which gives the kind of object you are dealing with.
 
 Get a list of all slots which all objects have with:
 
     Object slotNames
 
-## Inheritance
+### Inheritance
 
 Supposed we want to model instances of programming books. The book "the Io language" is an instance of a Book object.
 
@@ -67,4 +71,5 @@ Supposed we want to model instances of programming books. The book "the Io langu
     //     +---------------+    |
     //     |  proto        |----+
     //     +---------------+
+
 
