@@ -10,7 +10,7 @@ TMPFILE=`mktemp /tmp/litio.XXXXXX` || exit 1
 function compile {
   # we consider every line with four leading spaces as io code (aka markdown)
   # code lines with a '//' comment at the end will be wrapped with 'writeln()'
-  grep "^    " "$FILE" | sed 's/^    //' | sed 's/\(.*\) *\/\/ \((.*)\).*/writeln("\2 ", \1)/g' | sed 's/ *)/)/g' > $TMPFILE
+  grep "^    " "$FILE" | sed 's/^    //' | sed 's/\(.*\) *\/\/ \(([0-9]*)\).*/writeln("\2 ", \1)/g' | sed 's/ *)/)/g' > $TMPFILE
   io $TMPFILE
 }
 
