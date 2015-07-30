@@ -2,7 +2,7 @@
 
 Some personal notes about [Io][1].
 
-1. [on Io's Terminology](terminology.io.md)
+1. [Terminology](terminology.io.md)
 2. [on Objects](objects.io.md)
 
 ### Usage
