@@ -1,5 +1,7 @@
 # Objects
 
+### Prototypes
+
 Create new objects by **cloning** existing ones. The existing object is then called a **prototype**:
 
     Product := Object clone
@@ -33,7 +35,10 @@ Get a sorted list of all slots which all objects have with:
 
 ### Inheritance
 
-Supposed we want to model instances of programming books. The book "the Io language" is an instance of a Book object.
+If an object receives a message, then it looks for a matching slot. If no match is found, then the lookup
+continues recursively in its `protos`.
+
+Supposed we want to model instances of programming books. The book "The Io language" is an instance of a Book object.
 
     Book := Product clone
     Book type                                                        // (5) Book
@@ -44,7 +49,8 @@ Supposed we want to model instances of programming books. The book "the Io langu
     io_book type                                                     // (8) Book [not io_book]
     io_book description                                              // (9) something you can buy
 
-#### Inheritance in Io
+#### Inheritance Model in Io
+
 
     //                                            +---------------+
     //                                            | Object        |
@@ -72,6 +78,35 @@ Supposed we want to model instances of programming books. The book "the Io langu
     //     +---------------+    |
     //     |  proto        |----+
     //     +---------------+
+
+### Multiple Inheritance
+
+You can add any number of prototypes to an object's `protos` list using `appendProto()`:
+
+    CellPhone := Product clone
+    CellPhone phone := method(person, "calling " .. person)
+
+    MusicPlayer := Product clone
+    MusicPlayer play := method("playing music")
+
+    SmartPhone := CellPhone clone
+    SmartPhone appendProto(MusicPlayer)
+    SmartPhone protos map(type)                                      // (10) list(CellPhone, MusicPlayer)
+
+    iPhone := SmartPhone clone
+    iPhone description                                               // (11) "something you can buy"
+    iPhone play()                                                    // (12) "playing music"
+    iPhone phone("Steve")                                            // (13) "calling Steve"
+
+If an object inherits the same slot from multiple objects (_"Daimond-Problem"_), then the slot of the first proto will be used:
+
+    Toaster := Object clone
+    Toaster on := method("toast a bread")
+    Bomb := Object clone
+    Bomb on := method("BOOOM!")
+    strangeMachine := Toaster clone
+    strangeMachine appendProto(Bomb)
+    strangeMachine on()                                              // (14) "toast a bread"
 
 ### Methods
 
