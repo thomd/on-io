@@ -68,10 +68,12 @@ Message _arguments_ are passed as _expressions_ and evaluated by the _receiver_.
 
 An object is a receiver of a message:
 
-    //         "receiver" --+     +-- "message"
-    //                      |     |
-    //                      v     v
-    //                   Object clone
+    Fruite := Object clone
+    //          ^      ^
+    //          |      |
+    //          |      +----- "message"
+    //          |
+    //          +------------ "receiver"
 
 If an object receives a message to which it can't respond, then it sends this message to its _prototype_.
 
